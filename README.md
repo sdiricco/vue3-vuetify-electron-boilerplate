@@ -1,1 +1,1 @@
-# arduino-dashboard
+# Electron vite vue3 template
