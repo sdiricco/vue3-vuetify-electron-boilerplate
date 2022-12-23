@@ -1,21 +1,22 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import App from "./App.vue";
+import router from "./router";
 import "./samples/node-api";
 
-// Vuetify
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
-import * as components from "vuetify/components";
-import * as directives from "vuetify/directives";
+// Plugins
+import { registerPlugins } from "./plugins";
 
-const vuetify = createVuetify({
-  components,
-  directives,
-});
+const pinia = createPinia();
 
-createApp(App)
-  .use(vuetify)
-  .mount("#app")
-  .$nextTick(() => {
+const app = createApp(App);
+
+registerPlugins(app);
+
+app.use(pinia).use(router);
+
+router.isReady().then(() => {
+  app.mount("#app").$nextTick(() => {
     postMessage({ payload: "removeLoading" }, "*");
   });
+});
