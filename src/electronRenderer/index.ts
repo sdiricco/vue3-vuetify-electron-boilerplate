@@ -1,13 +1,13 @@
-import { ipcRenderer, MessageBoxOptions, SaveDialogOptions } from "electron";
+import { ipcRenderer, MessageBoxOptions, MessageBoxReturnValue } from "electron";
 import { IShowMessageBoxReturnValue, ISaveDialogReturnValue, Channel } from "../types";
-import { errorHandle } from "./errorHandle"
+import { ElectronError } from "./errorHandle"
 
-export async function showMessageBox(messageBoxOptions: MessageBoxOptions): Promise<IShowMessageBoxReturnValue> {
-  return await errorHandle(async () => ipcRenderer.invoke(Channel.ShowMessageBox, messageBoxOptions))
-}
-
-export async function showSaveDialog(saveDialogOptions: SaveDialogOptions): Promise<ISaveDialogReturnValue> {
-  return await ipcRenderer.invoke(Channel.ShowSaveDialog, saveDialogOptions);
+export async function showMessageBox(messageBoxOptions: MessageBoxOptions): Promise<MessageBoxReturnValue> {
+  const response = await ipcRenderer.invoke(Channel.ShowMessageBox, messageBoxOptions);  
+  if (response.error) {
+    throw new ElectronError(response.error);
+  }
+  return response.data;
 }
 
 export async function invokeChildWin()  {

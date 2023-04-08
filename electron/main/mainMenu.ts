@@ -84,26 +84,6 @@ export function create(win, onClickItem) {
           role: "quit",
         },
       ],
-    },
-    {
-      id: 'device',
-      parentId: null,
-      label: "Device",
-      submenu: [
-        {
-          id: 'device/port',
-          parentId: "device",
-          label: "Port",
-          submenu: [
-            {
-              id: 'device/port/COM6',
-              parentId: "device/port",
-              label: "COM6",
-              click: (menuItem) => onClickItem({...optionsFiltered(menuItem)})
-            }
-          ]
-        }
-      ]
     }
   ];
   template = R.clone(__template);
